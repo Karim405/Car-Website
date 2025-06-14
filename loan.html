@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Car Loan Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #000000; /* Black body background */
+      padding: 40px;
+    }
+    .calculator-container {
+      max-width: 500px;
+      margin: auto;
+      background: #333333; /* Dark gray box background */
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 6px rgba(0,0,0,0.08);
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #ffffff; /* White text for contrast on dark gray */
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+      color: #ffffff; /* White text for contrast */
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      background: #ffffff; /* White input background for readability */
+      color: #333; /* Dark text for input */
+    }
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 12px;
+      background: blue; /* Default button color */
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #ff0000; /* Red on hover */
+    }
+    #result {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 18px;
+      color: #ffffff; /* White text for contrast on dark gray */
+    }
+  </style>
+</head>
+<body>
+  <div class="calculator-container">
+    <h2>Car Loan Calculator</h2>
+    <form id="loan-form">
+      <label for="car-price">Car Price ($)</label>
+      <input type="number" id="car-price" name="car_price" placeholder="Enter car price" required />
+
+      <label for="down-payment">Down Payment ($)</label>
+      <input type="number" id="down-payment" name="down_payment" placeholder="Enter down payment" required />
+
+      <label for="loan-term">Loan Term (months)</label>
+      <input type="number" id="loan-term" name="loan_term" placeholder="Enter loan term" required />
+
+      <label for="interest-rate">Annual Interest Rate (%)</label>
+      <input type="number" id="interest-rate" name="interest_rate" placeholder="Enter interest rate" step="0.01" value="5" required />
+
+      <button type="submit">Calculate</button>
+    </form>
+    <div id="result"></div>
+  </div>
+
+  <script>
+    document.getElementById('loan-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      // Get input values
+      const carPrice = parseFloat(document.getElementById('car-price').value);
+      const downPayment = parseFloat(document.getElementById('down-payment').value);
+      const loanTerm = parseInt(document.getElementById('loan-term').value);
+      const annualInterestRate = parseFloat(document.getElementById('interest-rate').value);
+
+      // Debug: Log inputs to console for troubleshooting
+      console.log('Inputs:', { carPrice, downPayment, loanTerm, annualInterestRate });
+
+      // Validate inputs
+      if (isNaN(carPrice) || isNaN(downPayment) || isNaN(loanTerm) || isNaN(annualInterestRate)) {
+        document.getElementById('result').innerText = 'Please enter valid numbers for all fields.';
+        return;
+      }
+      if (carPrice <= 0) {
+        document.getElementById('result').innerText = 'Car price must be greater than 0.';
+        return;
+      }
+      if (downPayment < 0) {
+        document.getElementById('result').innerText = 'Down payment cannot be negative.';
+        return;
+      }
+      if (loanTerm <= 0) {
+        document.getElementById('result').innerText = 'Loan term must be greater than 0 months.';
+        return;
+      }
+      if (annualInterestRate < 0) {
+        document.getElementById('result').innerText = 'Interest rate cannot be negative.';
+        return;
+      }
+      if (downPayment >= carPrice) {
+        document.getElementById('result').innerText = 'Down payment must be less than car price.';
+        return;
+      }
+
+      // Calculate monthly payment
+      const principal = carPrice - downPayment;
+      const monthlyRate = annualInterestRate / 100 / 12;
+      const months = loanTerm;
+      const monthlyPayment = principal * (monthlyRate * Math.pow(1 + monthlyRate, months)) / (Math.pow(1 + monthlyRate, months) - 1);
+
+      // Debug: Log calculation results
+      console.log('Calculation:', { principal, monthlyRate, months, monthlyPayment });
+
+      // Display result
+      if (isNaN(monthlyPayment) || !isFinite(monthlyPayment)) {
+        document.getElementById('result').innerText = 'Unable to calculate payment. Please check your inputs.';
+      } else {
+        document.getElementById('result').innerText = `Monthly Payment: $${monthlyPayment.toFixed(2)}`;
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Car Booking</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      direction: ltr;
+      background-color: #000;
+      margin: 0;
+      padding: 20px;
+      color: #fff;
+    }
+    .overlay {
+      background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8));
+      min-height: 100vh;
+      padding: 20px;
+    }
+    h2 {
+      text-align: center;
+      color: #fff;
+      margin-bottom: 20px;
+    }
+    form {
+      background: rgba(50, 50, 50, 0.9);
+      padding: 30px;
+      border-radius: 10px;
+      max-width: 400px;
+      margin: auto;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+    label {
+      color: #fff;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      background-color: #222;
+      color: #fff;
+    }
+    button {
+      background-color: #388e3c;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      width: 100%;
+    }
+    button:hover {
+      background-color: #d32f2f;
+    }
+    .summary {
+      background: rgba(50, 50, 50, 0.9);
+      margin: 30px auto;
+      padding: 20px;
+      max-width: 400px;
+      border-radius: 10px;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+      color: #fff;
+    }
+    .summary p {
+      margin: 10px 0;
+    }
+    .confirmation-message {
+      color: #d32f2f;
+      font-size: 1.2em;
+      font-weight: bold;
+      text-align: center;
+      margin: 10px 0;
+    }
+    .stars {
+      font-size: 30px;
+      color: gold;
+      display: flex;
+      justify-content: center;
+    }
+    .stars input {
+      display: none;
+    }
+    .stars label {
+      cursor: pointer;
+      margin: 0 5px;
+    }
+    .stars input:checked ~ label {
+      color: gold;
+    }
+    a {
+      display: inline-block;
+      margin-top: 10px;
+      text-decoration: none;
+      color: white;
+      background-color: #007bff;
+      padding: 10px 15px;
+      border-radius: 6px;
+    }
+    a:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay">
+    <h2>Car Booking Form</h2>
+    <form id="bookingForm">
+      <label>Name:</label>
+      <input type="text" name="name" required>
+
+      <label>ID Number:</label>
+      <input type="text" name="idNumber" required>
+
+      <label>Car Model:</label>
+      <select name="model" required>
+        <option value="tesla">Tesla</option>
+        <option value="sport">Sport</option>
+      </select>
+
+      <label>Phone Number:</label>
+      <input type="text" name="phone" required>
+
+      <label>Booking Date:</label>
+      <input type="date" name="date" required>
+
+      <label>Booking Time:</label>
+      <input type="time" name="time" required>
+
+      <label>Car Rating (1 to 5):</label>
+      <div class="stars">
+        <input type="radio" id="star1" name="rating" value="1"><label for="star1">★</label>
+        <input type="radio" id="star2" name="rating" value="2"><label for="star2">★</label>
+        <input type="radio" id="star3" name="rating" value="3"><label for="star3">★</label>
+        <input type="radio" id="star4" name="rating" value="4"><label for="star4">★</label>
+        <input type="radio" id="star5" name="rating" value="5"><label for="star5">★</label>
+      </div>
+
+      <button type="submit">Confirm Booking</button>
+    </form>
+
+    <div class="summary" id="summary" style="display: none;">
+      <h3>Booking Details:</h3>
+      <p><strong>Name:</strong> <span id="sum-name"></span></p>
+      <p><strong>ID Number:</strong> <span id="sum-id"></span></p>
+      <p><strong>Car Model:</strong> <span id="sum-model"></span></p>
+      <p><strong>Phone Number:</strong> <span id="sum-phone"></span></p>
+      <p><strong>Date:</strong> <span id="sum-date"></span></p>
+      <p><strong>Time:</strong> <span id="sum-time"></span></p>
+      <p><strong>Rating:</strong> <span id="sum-rating"></span></p>
+      <p class="confirmation-message">Your booking has been confirmed successfully!</p>
+      <a href="admin.html">Go to Dashboard</a>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('bookingForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const name = event.target.name.value;
+      const idNumber = event.target.idNumber.value;
+      const model = event.target.model.value;
+      const phone = event.target.phone.value;
+      const date = event.target.date.value;
+      const time = event.target.time.value;
+      const ratingInput = document.querySelector('input[name="rating"]:checked');
+      const rating = ratingInput ? ratingInput.value : 'Not rated';
+
+      // Show confirmation alert
+      alert('Booking Confirmed! Your booking details have been saved successfully.');
+
+      // Show summary
+      document.getElementById('summary').style.display = 'block';
+      document.getElementById('sum-name').textContent = name;
+      document.getElementById('sum-id').textContent = idNumber;
+      document.getElementById('sum-model').textContent = model;
+      document.getElementById('sum-phone').textContent = phone;
+      document.getElementById('sum-date').textContent = date;
+      document.getElementById('sum-time').textContent = time;
+      document.getElementById('sum-rating').textContent = rating;
+
+      // Hide form
+      document.getElementById('bookingForm').style.display = 'none';
+
+      // Save booking in LocalStorage
+      const bookingData = {
+        name,
+        idNumber,
+        model,
+        phone,
+        date,
+        time,
+        rating
+      };
+
+      let bookings = JSON.parse(localStorage.getItem('bookings')) || [];
+      bookings.push(bookingData);
+      localStorage.setItem('bookings', JSON.stringify(bookings));
+    });
+  </script>
+</body>
+</html>

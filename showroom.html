@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact Us - Car Dealerships</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <script type="text/javascript">
+    (function(){
+      emailjs.init("YOUR_PUBLIC_KEY"); 
+    })();
+  </script>
+  <style>
+    /* Header Styles */
+    .nav-link:hover {
+      color: #e82127;
+      transition: color 0.3s ease;
+    }
+    
+    .dropdown {
+      position: relative;
+    }
+    
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #333;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 1;
+      left: 0;
+      top: 100%;
+      border-radius: 4px;
+    }
+    
+    .dropdown:hover .dropdown-content {
+      display: block;
+      transition: all 0.3s ease;
+    }
+    
+    .dropdown-content a {
+      color: white;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+      text-align: left;
+      font-size: 0.95rem;
+    }
+    
+    .dropdown-content a:hover {
+      background-color: #555;
+      color: #e82127;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    
+    @media screen and (max-width: 768px) {
+      .nav-links {
+        flex-direction: column;
+        gap: 10px;
+      }
+      .dropdown-content {
+        position: static;
+        box-shadow: none;
+        background-color: #222;
+      }
+    }
+    
+    /* Original Dealership Finder Styles */
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #000000;
+      color: #ffffff;
+      padding-top: 80px; /* Added padding for fixed header */
+    }
+    .dealership-card {
+      background: #1f2937;
+      border-radius: 8px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    .dealership-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .dealership-card:hover {
+      transform: translateY(-5px);
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .modal-content {
+      background: #1f2937;
+      padding: 2rem;
+      border-radius: 8px;
+      width: 90%;
+      max-width: 500px;
+      position: relative;
+      color: #ffffff;
+    }
+    .close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #ffffff;
+    }
+    .input-field {
+      margin-bottom: 1rem;
+    }
+    .input-field input,
+    .input-field textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #4b5563;
+      border-radius: 4px;
+      font-size: 1rem;
+      background: #374151;
+      color: #ffffff;
+    }
+    .input-field textarea {
+      resize: vertical;
+    }
+    .error-message {
+      color: #ef4444;
+      margin-bottom: 1rem;
+    }
+    .confirmation-message {
+      display: none;
+      position: fixed;
+      top: 1rem;
+      right: -300px;
+      background: #16a34a;
+      color: white;
+      padding: 1rem;
+      border-radius: 4px;
+      z-index: 1000;
+      transition: right 0.3s ease;
+    }
+    .confirmation-message.visible {
+      right: 1rem;
+    }
+    button {
+      background-color: #dc2626;
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border-radius: 4px;
+      font-weight: 500;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #b91c1c;
+    }
+    select, input[type="text"] {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #4b5563;
+      border-radius: 4px;
+      font-size: 1rem;
+      background: #374151;
+      color: #ffffff;
+      margin-bottom: 1rem;
+    }
+    .filter-bar {
+      position: sticky;
+      top: 80px; /* Adjusted for header */
+      background: #000000;
+      z-index: 100;
+      padding: 1rem 0;
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation Bar / Header -->
+  <nav class="bg-black bg-opacity-90 p-4 fixed w-full top-0 z-50 shadow-lg">
+    <div class="container mx-auto flex justify-between items-center">
+      <!-- Left Section: Logo -->
+      <div class="flex items-center">
+        <img src="https://www.tesla.com/themes/custom/tesla_frontend/assets/favicon.ico" alt="Tesla Logo" class="h-10 mr-4">
+        <span class="text-2xl font-bold text-white">TESLA</span>
+      </div>
+      <!-- Center Section: Navigation Links -->
+      <div class="flex-1 flex justify-center space-x-8">
+        <a href="home.html" class="nav-link text-white text-lg">Home</a>
+        <div class="dropdown">
+          <span class="nav-link text-white text-lg">Services</span>
+          <div class="dropdown-content">
+            <a href="Insurance.html">Insurance</a>
+            <a href="/HTML/maintance.html"> Maintenance</a>
+            <a href="booktest.html">Book Test</a>
+            <a href="loan.htm">Loan</a>
+          </div>
+        </div>
+        <div class="dropdown">
+          <span class="nav-link text-white text-lg">Buy</span>
+          <div class="dropdown-content">
+            <a href="cars.html">Cars</a>
+            <a href="/HTML/showroom.html">ShowRoom</a>
+            <a href="/HTML/upcoming.html">UpComing Cars</a>
+          </div>
+        </div>
+        <a href="contactus.html" class="nav-link text-white text-lg text-red-600">Contact Us</a>
+        <a href="FAQ.html" class="nav-link text-white text-lg">FAQ</a>
+      </div>
+      <!-- Right Section: Icons -->
+      <div class="flex space-x-6">
+        <div class="dropdown nav-link text-white text-lg flex items-center">
+          <i class="fas fa-globe"></i>
+          <div class="dropdown-content">
+            <a href="#">English</a>
+            <a href="#">Arabic</a>
+          </div>
+        </div>
+        <a href="profile.html" class="nav-link text-white text-lg flex items-center">
+          <i class="fas fa-user"></i>
+        </a>
+        <a href="login.html" class="nav-link text-white text-lg flex items-center">
+          <i class="fas fa-lock mr-2"></i> Sign In
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Original Dealership Finder Content -->
+  <div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-6">Find Your Perfect Car</h1>
+    <div class="filter-bar">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <select id="cityFilter" onchange="applyFilters()">
+          <option value="">All Cities</option>
+          <option value="Cairo">Cairo</option>
+          <option value="Alexandria">Alexandria</option>
+          <option value="Giza">Giza</option>
+          <option value="Sharm El Sheikh">Sharm El Sheikh</option>
+          <option value="Hurghada">Hurghada</option>
+          <option value="Luxor">Luxor</option>
+          <option value="Aswan">Aswan</option>
+          <option value="Suez">Suez</option>
+          <option value="Mansoura">Mansoura</option>
+          <option value="Tanta">Tanta</option>
+          <option value="Port Said">Port Said</option>
+          <option value="Ismailia">Ismailia</option>
+        </select>
+        <select id="brandFilter" onchange="applyFilters()">
+          <option value="">All Brands</option>
+          <option value="Toyota">Toyota</option>
+          <option value="Honda">Honda</option>
+          <option value="Mercedes-Benz">Mercedes-Benz</option>
+          <option value="BMW">BMW</option>
+          <option value="Hyundai">Hyundai</option>
+          <option value="Audi">Audi</option>
+          <option value="Nissan">Nissan</option>
+          <option value="Ford">Ford</option>
+          <option value="Volkswagen">Volkswagen</option>
+          <option value="Kia">Kia</option>
+          <option value="Chevrolet">Chevrolet</option>
+          <option value="Jeep">Jeep</option>
+          <option value="Land Rover">Land Rover</option>
+          <option value="Porsche">Porsche</option>
+        </select>
+        <input type="text" id="searchInput" placeholder="Search by name, city, brand, or car..." oninput="applyFilters()">
+      </div>
+      <button onclick="clearFilters()" class="mt-4">Clear Filters</button>
+    </div>
+    <div id="errorMessage" class="error-message"></div>
+    <div id="dealershipList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Dealership cards will be populated by JavaScript -->
+    </div>
+
+    <div id="contactModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeContactModal()">×</span>
+        <h2 class="text-2xl font-semibold mb-6">Contact Dealership</h2>
+        <div class="input-field">
+          <input type="text" id="contactName" placeholder="Your Name" required>
+        </div>
+        <div class="input-field">
+          <input type="tel" id="contactPhone" placeholder="Your Phone Number" required>
+        </div>
+        <div class="input-field">
+          <textarea id="contactMessage" placeholder="Your Message" rows="4" required></textarea>
+        </div>
+        <button onclick="submitContact()">Send Email</button>
+      </div>
+    </div>
+
+    <div id="confirmationMessage" class="confirmation-message">
+      Email sent successfully!
+    </div>
+  </div>
+
+  <script>
+    let selectedDealership = '';
+
+    const dealerships = [
+      { name: 'Car Dealership A', city: 'Cairo', brand: 'Toyota', car: 'Camry 2023', email: 'dealershipA@example.com' },
+      { name: 'Auto Hub B', city: 'Alexandria', brand: 'Honda', car: 'Civic 2022', email: 'autohubB@example.com' },
+      { name: 'Luxury Motors C', city: 'Giza', brand: 'Mercedes-Benz', car: 'E-Class 2024', email: 'luxurymotorsC@example.com' },
+      { name: 'Elite Autos D', city: 'Sharm El Sheikh', brand: 'BMW', car: '5 Series 2023', email: 'eliteautosD@example.com' },
+      { name: 'City Motors E', city: 'Hurghada', brand: 'Hyundai', car: 'Tucson 2023', email: 'citymotorsE@example.com' },
+      { name: 'Prime Cars F', city: 'Luxor', brand: 'Audi', car: 'Q5 2024', email: 'primecarsF@example.com' },
+      { name: 'Nile Motors G', city: 'Aswan', brand: 'Nissan', car: 'Sentra 2023', email: 'nilemotorsG@example.com' },
+      { name: 'Delta Autos H', city: 'Mansoura', brand: 'Ford', car: 'Escape 2024', email: 'deltaautosH@example.com' },
+      { name: 'Pyramid Cars I', city: 'Cairo', brand: 'Volkswagen', car: 'Tiguan 2023', email: 'pyramidcarsI@example.com' },
+      { name: 'Coastal Motors J', city: 'Alexandria', brand: 'Kia', car: 'Sportage 2024', email: 'coastalmotorsJ@example.com' },
+      { name: 'Suez Autos K', city: 'Suez', brand: 'Chevrolet', car: 'Equinox 2023', email: 'suezautosK@example.com' },
+      { name: 'Tanta Motors L', city: 'Tanta', brand: 'Jeep', car: 'Grand Cherokee 2024', email: 'tantamotorsL@example.com' },
+      { name: 'Port Autos M', city: 'Port Said', brand: 'Toyota', car: 'Corolla 2022', email: 'portautosM@example.com' },
+      { name: 'Ismailia Cars N', city: 'Ismailia', brand: 'Honda', car: 'CR-V 2023', email: 'ismailiacarsN@example.com' },
+      { name: 'Luxury Autos O', city: 'Cairo', brand: 'Land Rover', car: 'Range Rover 2024', email: 'luxuryautosO@example.com' },
+      { name: 'Red Sea Motors P', city: 'Hurghada', brand: 'Porsche', car: 'Cayenne 2023', email: 'redseamotorsP@example.com' },
+      { name: 'Sphinx Cars Q', city: 'Giza', brand: 'BMW', car: 'X5 2024', email: 'sphinxcarsQ@example.com' },
+      { name: 'Oasis Autos R', city: 'Sharm El Sheikh', brand: 'Audi', car: 'A4 2023', email: 'oasisautosR@example.com' },
+      { name: 'Nile Valley Motors S', city: 'Luxor', brand: 'Hyundai', car: 'Elantra 2024', email: 'nilevalleymotorsS@example.com' },
+      { name: 'Canal Autos T', city: 'Ismailia', brand: 'Volkswagen', car: 'Passat 2023', email: 'canalautosT@example.com' },
+      { name: 'Delta Motors U', city: 'Mansoura', brand: 'Ford', car: 'Mustang 2024', email: 'deltamotorsU@example.com' },
+      { name: 'Sunset Cars V', city: 'Aswan', brand: 'Kia', car: 'Optima 2023', email: 'sunsetcarsV@example.com' },
+      { name: 'Coastline Autos W', city: 'Alexandria', brand: 'Chevrolet', car: 'Malibu 2024', email: 'coastlineautosW@example.com' },
+      { name: 'Gateway Motors X', city: 'Suez', brand: 'Nissan', car: 'Altima 2023', email: 'gatewaymotorsX@example.com' },
+      { name: 'Tanta Autos Y', city: 'Tanta', brand: 'Jeep', car: 'Wrangler 2024', email: 'tantaautosY@example.com' },
+      { name: 'Port Motors Z', city: 'Port Said', brand: 'Toyota', car: 'RAV4 2023', email: 'portmotorsZ@example.com' },
+      { name: 'Capital Autos AA', city: 'Cairo', brand: 'Mercedes-Benz', car: 'C-Class 2024', email: 'capitalautosAA@example.com' },
+      { name: 'Red Sea Autos BB', city: 'Hurghada', brand: 'Honda', car: 'Accord 2023', email: 'redseaautosBB@example.com' },
+      { name: 'Temple Motors CC', city: 'Luxor', brand: 'BMW', car: '3 Series 2024', email: 'templemotorsCC@example.com' },
+      { name: 'Sinai Cars DD', city: 'Sharm El Sheikh', brand: 'Audi', car: 'Q7 2023', email: 'sinaicarsDD@example.com' }
+    ];
+
+    function applyFilters() {
+      const cityFilter = document.getElementById('cityFilter').value;
+      const brandFilter = document.getElementById('brandFilter').value;
+      const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+
+      let filteredDealerships = [...dealerships];
+
+      // Apply city filter
+      if (cityFilter) {
+        filteredDealerships = filteredDealerships.filter(d => d.city === cityFilter);
+      }
+
+      // Apply brand filter
+      if (brandFilter) {
+        filteredDealerships = filteredDealerships.filter(d => d.brand === brandFilter);
+      }
+
+      // Apply search filter
+      if (searchTerm) {
+        filteredDealerships = filteredDealerships.filter(d =>
+          d.name.toLowerCase().includes(searchTerm) ||
+          d.city.toLowerCase().includes(searchTerm) ||
+          d.brand.toLowerCase().includes(searchTerm) ||
+          d.car.toLowerCase().includes(searchTerm)
+        );
+      }
+
+      // Update dealership list
+      const dealershipList = document.getElementById('dealershipList');
+      dealershipList.innerHTML = '';
+
+      if (filteredDealerships.length === 0) {
+        dealershipList.innerHTML = '<p class="text-gray-400">No dealerships match your filters.</p>';
+        return;
+      }
+
+      filteredDealerships.forEach((dealership, index) => {
+        const card = document.createElement('div');
+        card.className = 'dealership-card';
+        card.innerHTML = `
+          <h2 class="text-xl font-semibold">${dealership.name}</h2>
+          <p class="text-gray-400">Location: ${dealership.city}, Egypt</p>
+          <p class="text-gray-400">Featured Car: ${dealership.brand} ${dealership.car}</p>
+          <button onclick="openContactModal('${dealership.name}')">Request Call</button>
+        `;
+        dealershipList.appendChild(card);
+
+        // Add animation with slight delay for each card
+        setTimeout(() => {
+          card.classList.add('visible');
+        }, index * 100);
+      });
+    }
+
+    function clearFilters() {
+      document.getElementById('cityFilter').value = '';
+      document.getElementById('brandFilter').value = '';
+      document.getElementById('searchInput').value = '';
+      applyFilters();
+    }
+
+    function openContactModal(dealershipName) {
+      selectedDealership = dealershipName;
+      document.getElementById('contactModal').style.display = 'flex';
+    }
+
+    function closeContactModal() {
+      document.getElementById('contactModal').style.display = 'none';
+      document.getElementById('contactName').value = '';
+      document.getElementById('contactPhone').value = '';
+      document.getElementById('contactMessage').value = '';
+    }
+
+    function showConfirmationMessage() {
+      const confirmationDiv = document.getElementById('confirmationMessage');
+      confirmationDiv.classList.add('visible');
+      setTimeout(() => {
+        confirmationDiv.classList.remove('visible');
+      }, 3000);
+    }
+
+    function submitContact() {
+      const name = document.getElementById('contactName').value;
+      const phone = document.getElementById('contactPhone').value;
+      const message = document.getElementById('contactMessage').value;
+
+      if (name && phone && message) {
+        const dealership = dealerships.find(d => d.name === selectedDealership);
+        if (dealership && dealership.email) {
+          const templateParams = {
+            to_email: dealership.email,
+            from_name: name,
+            phone: phone,
+            message: message,
+            to_name: selectedDealership
+          };
+
+          emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', templateParams)
+            .then(function(response) {
+              showConfirmationMessage();
+              closeContactModal();
+            }, function(error) {
+              alert('Failed to send email: ' + JSON.stringify(error));
+            });
+        } else {
+          alert('Dealership email not found.');
+        }
+      } else {
+        alert('Please fill in all fields.');
+      }
+    }
+
+    // Initialize dealership list on page load
+    document.addEventListener('DOMContentLoaded', applyFilters);
+  </script>
+</body>
+</html>

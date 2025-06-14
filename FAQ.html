@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FAQ Section</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: black;
+      margin: 0;
+      padding: 40px 20px;
+      min-height: 100vh;
+    }
+    .faq-container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: #333;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+      color: white;
+    }
+    .faq-title {
+      text-align: center;
+      font-size: 2.5em;
+      color: white;
+      margin-bottom: 30px;
+      font-weight: 600;
+    }
+    .faq-item {
+      border-bottom: 1px solid #444;
+      margin-bottom: 15px;
+    }
+    .faq-question {
+      padding: 20px;
+      font-size: 1.2em;
+      color: white;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #444;
+      border-radius: 5px;
+      transition: background 0.3s ease;
+    }
+    .faq-question:hover {
+      background: #e82127;
+    }
+    .faq-question.active {
+      background: #b91c1c;
+    }
+    .faq-question i {
+      transition: transform 0.3s ease;
+    }
+    .faq-question.active i {
+      transform: rotate(45deg);
+    }
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      padding: 0 20px;
+      font-size: 1em;
+      color: #ccc;
+      line-height: 1.6;
+      transition: max-height 0.3s ease, padding 0.3s ease;
+    }
+    .faq-answer.active {
+      max-height: 200px;
+      padding: 0 20px 20px 20px;
+    }
+    .back-button {
+      display: inline-block;
+      padding: 10px 20px;
+      background: #e82127;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 5px;
+      font-size: 1em;
+      transition: background 0.3s ease;
+      margin-top: 30px;
+    }
+    .back-button:hover {
+      background: #b91c1c;
+    }
+  </style>
+</head>
+<body>
+  <div class="faq-container">
+    <h1 class="faq-title">Frequently Asked Questions</h1>
+    <div class="faq-item">
+      <div class="faq-question">How do I reserve a car online? <i class="fas fa-plus"></i></div>
+      <div class="faq-answer">Visit the car’s page, select your preferred model and specifications, then click “Reserve Now” to fill out the reservation form and pay a deposit.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question">What is the warranty period for new cars? <i class="fas fa-plus"></i></div>
+      <div class="faq-answer">All new cars come with a standard 3-year warranty or 60,000 miles, whichever comes first. Extended warranties are available at an additional cost.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question">Can I customize my car’s features? <i class="fas fa-plus"></i></div>
+      <div class="faq-answer">Yes, you can customize features like color, interior, and add-ons during the reservation process. Contact the dealership for specific options.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question">How long does delivery take after ordering? <i class="fas fa-plus"></i></div>
+      <div class="faq-answer">Delivery typically takes 4–8 weeks, depending on the car model and customization options. You’ll receive updates on your order status.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question">Is financing available for car purchases? <i class="fas fa-plus"></i></div>
+      <div class="faq-answer">Yes, we offer financing plans with flexible monthly payments. Check the “Financing” section or contact our team for details.</div>
+    </div>
+    <div style="text-align: center;">
+      <a href="home.html" class="back-button">Back to Home</a>
+    </div>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const faqQuestions = document.querySelectorAll('.faq-question');
+      faqQuestions.forEach((question) => {
+        question.addEventListener('click', () => {
+          question.classList.toggle('active');
+          const answer = question.nextElementSibling;
+          answer.classList.toggle('active');
+        });
+      });
+    });
+  </script>
+</body>
+</html>

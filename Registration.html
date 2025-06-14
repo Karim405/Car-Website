@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registration</title>
+  <link rel="stylesheet" href="/CSS/Registeration.css">
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <style>
+    /* Custom styles for radio buttons to match the form design */
+    .user-type {
+      margin: 20px 0;
+      text-align: left;
+    }
+    .user-type label {
+      display: block;
+      margin-bottom: 10px;
+      color: #333;
+      font-size: 1rem;
+    }
+    .user-type input[type="radio"] {
+      margin-right: 8px;
+      accent-color: #e82127; /* Matches Tesla-inspired theme */
+    }
+    .user-type span {
+      font-size: 0.95rem;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <form id="registerForm">
+      <h1>Registration</h1>
+      <div class="input-box">
+        <div class="input-field">
+          <input type="text" id="fullName" placeholder="Full Name" required>
+          <i class='bx bxs-user'></i>
+        </div>
+        <div class="input-field">
+          <input type="text" id="username" placeholder="Username" required>
+          <i class='bx bxs-user'></i>
+        </div>
+      </div>
+      <div class="input-box">
+        <div class="input-field">
+          <input type="email" id="email" placeholder="Email" required>
+          <i class='bx bxs-envelope'></i>
+        </div>
+        <div class="input-field">
+          <input type="number" id="phone" placeholder="Phone Number" required>
+          <i class='bx bxs-phone'></i>
+        </div>
+      </div>
+      <div class="input-box">
+        <div class="input-field">
+          <input type="password" id="password" placeholder="Password" required>
+          <i class='bx bxs-lock-alt'></i>
+        </div>
+        <div class="input-field">
+          <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+          <i class='bx bxs-lock-alt'></i>
+        </div>
+      </div>
+      <!-- User Type Selection -->
+      <div class="user-type">
+        <label style="color: white;">User Type:</label>
+        <label>
+          <input type="radio" name="userType" value="user" checked>
+          <span style="color: white;">User</span>
+        </label>
+        <label>
+          <input type="radio" name="userType" value="admin">
+          <span style="color: white;">Admin</span>
+        </label>
+      </div>
+      <label><input type="checkbox"> I hereby declare that the above information provided is true and correct</label>
+      <button type="submit" class="btn">Register</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('registerForm').addEventListener('submit', function (e) {
+      e.preventDefault(); // Prevent form default submission
+
+      try {
+        // Get form values
+        const name = document.getElementById('fullName').value.trim();
+        const username = document.getElementById('username').value.trim();
+        const phoneNumber = String(document.getElementById('phone').value).trim(); // Convert to string
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+        const userType = document.querySelector('input[name="userType"]:checked').value; // Get selected user type
+
+        // Validate required fields
+        if (!name || !username || !phoneNumber || !email || !password || !confirmPassword || !userType) {
+          alert('Please fill in all required fields.');
+          return;
+        }
+
+        // Validate password match
+        if (password !== confirmPassword) {
+          alert('Passwords do not match. Please try again.');
+          return;
+        }
+
+        // Validate checkbox
+        const checkbox = document.querySelector('input[type="checkbox"]');
+        if (!checkbox.checked) {
+          alert('Please agree to the terms by checking the box.');
+          return;
+        }
+
+        // Save user data to localStorage
+        const userData = {
+          name,
+          username,
+          phoneNumber,
+          email,
+          password,
+          userType // Add userType to stored data
+        };
+        localStorage.setItem('userData', JSON.stringify(userData));
+
+        // Verify data was saved
+        const savedData = localStorage.getItem('userData');
+        if (!savedData) {
+          alert('Error saving data. Please try again.');
+          return;
+        }
+
+        if (userType === 'admin') {
+          window.location.href = 'admin.html';
+        } else {
+          window.location.href = 'profile.html';
+        }
+      } catch (error) {
+        console.error('Registration error:', error);
+        alert('An error occurred during registration. Please try again.');
+      }
+    });
+  </script>
+</body>
+</html>

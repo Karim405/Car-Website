@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tesla Inspired Homepage</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <style>
+    body {
+      background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
+      color: #ffffff;
+      font-family: 'Arial', sans-serif;
+    }
+    .nav-link:hover {
+      color: #e82127;
+      transition: color 0.3s ease;
+    }
+    .hero-section {
+      background: url('https://www.tesla.com/xNVhVpIE8/tesla_wallpaper.jpg') no-repeat center center/cover;
+      opacity: 0.9;
+    }
+    .carousel {
+      position: relative;
+      overflow: hidden;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .carousel-inner {
+      display: flex;
+      transition: transform 0.5s ease;
+    }
+    .carousel-item {
+      min-width: 100%;
+      height: 500px;
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .carousel-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0, 0, 0, 0.5);
+      color: white;
+      border: none;
+      padding: 10px;
+      cursor: pointer;
+      font-size: 20px;
+    }
+    .carousel-btn.left { left: 10px; }
+    .carousel-btn.right { right: 10px; }
+    .carousel-btn:hover { background: rgba(0, 0, 0, 0.8); }
+    .carousel-dots {
+      display: flex;
+      justify-content: center;
+      margin-top: 10px;
+    }
+    .dot {
+      width: 12px;
+      height: 12px;
+      background: #666;
+      border-radius: 50%;
+      margin: 0 5px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .dot.active {
+      background: #e82127;
+    }
+    .dot:hover {
+      background: #b91c1c;
+    }
+    .dropdown {
+      position: relative;
+    }
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #333;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 1;
+      left: 0;
+      top: 100%;
+      border-radius: 4px;
+    }
+    .dropdown:hover .dropdown-content {
+      display: block;
+      transition: all 0.3s ease;
+    }
+    .dropdown-content a {
+      color: white;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+      text-align: left;
+      font-size: 0.95rem;
+    }
+    .dropdown-content a:hover {
+      background-color: #555;
+      color: #e82127;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    .features-section {
+      background: linear-gradient(135deg, #222222 0%, #111111 100%);
+      padding: 50px 0;
+    }
+    .feature-card {
+      background: #333;
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+      transition: transform 0.3s ease, background 0.3s ease;
+    }
+    .feature-card:hover {
+      transform: translateY(-10px);
+      background: #444;
+    }
+    .feature-card i {
+      font-size: 2.5rem;
+      margin-bottom: 15px;
+      color: #e82127;
+    }
+    .drive-future-section {
+      background: url('https://www.tesla.com/tesla_theme/assets/img/roadster-hero.jpg') no-repeat center center/cover;
+      padding: 60px 0;
+      position: relative;
+      opacity: 0.95;
+    }
+    .drive-future-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1;
+    }
+    .drive-future-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+    }
+    .cta-btn {
+      background: #e82127;
+      color: white;
+      padding: 12px 30px;
+      border-radius: 50px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      transition: background 0.3s ease, transform 0.3s ease;
+    }
+    .cta-btn:hover {
+      background: #b91c1c;
+      transform: scale(1.05);
+    }
+    @media screen and (max-width: 768px) {
+      .nav-links {
+        flex-direction: column;
+        gap: 10px;
+      }
+      .dropdown-content {
+        position: static;
+        box-shadow: none;
+        background-color: #222;
+      }
+    }
+    
+    /* Updated Scrolling Strips Styles */
+    .scrolling-strips-container {
+      width: 100%;
+      overflow: hidden;
+      margin-bottom: 30px;
+    }
+    
+    .scrolling-strip {
+      position: relative;
+      overflow: hidden;
+      height: 250px;
+      margin-bottom: 20px;
+    }
+    
+    .strip-content {
+      display: flex;
+      position: absolute;
+      width: fit-content;
+    }
+    
+    /* First strip - right to left */
+    .strip-content.rtl {
+      animation: scrollRTL 50s linear infinite;
+    }
+    
+    /* Second strip - left to right */
+    .strip-content.ltr {
+      animation: scrollLTR 50s linear infinite;
+    }
+    
+    .car-card {
+      width: 300px;
+      height: 200px;
+      flex-shrink: 0;
+      margin: 0 15px;
+      border-radius: 10px;
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      color: white;
+      font-weight: bold;
+      text-align: center;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+      transition: transform 0.3s ease;
+      overflow: hidden;
+    }
+    
+    .car-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6));
+      z-index: 1;
+      transition: background 0.3s ease;
+    }
+    
+    .car-card:hover {
+      transform: scale(1.05);
+    }
+    
+    .car-card:hover::before {
+      background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.4));
+    }
+    
+    .car-card-content {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .car-card span {
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    }
+    
+    .car-card p {
+      font-size: 1rem;
+      margin-top: 5px;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+    }
+    
+    @keyframes scrollRTL {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-100%); }
+    }
+    
+    @keyframes scrollLTR {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(0); }
+    }
+
+    /* Chatbot Styles */
+    .chatbot-button {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 60px;
+      height: 60px;
+      background-color: #e82127;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      z-index: 999;
+      transition: all 0.3s ease;
+    }
+
+    .chatbot-button:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+    }
+
+    .chatbot-icon {
+      font-size: 24px;
+      color: white;
+    }
+
+    .chatbot-container {
+      position: fixed;
+      bottom: 100px;
+      right: 30px;
+      width: 350px;
+      height: 500px;
+      background-color: #222;
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      overflow: hidden;
+      display: none;
+      flex-direction: column;
+      transition: all 0.3s ease;
+    }
+
+    .chatbot-header {
+      background-color: #e82127;
+      padding: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: white;
+      border-top-left-radius: 15px;
+      border-top-right-radius: 15px;
+    }
+
+    .chatbot-title {
+      display: flex;
+      align-items: center;
+    }
+
+    .chatbot-title img {
+      width: 30px;
+      height: 30px;
+      margin-right: 10px;
+    }
+
+    .chatbot-close {
+      cursor: pointer;
+      font-size: 20px;
+      transition: color 0.2s ease;
+    }
+
+    .chatbot-close:hover {
+      color: #ddd;
+    }
+
+    .chatbot-messages {
+      flex: 1;
+      padding: 15px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .message {
+      max-width: 80%;
+      padding: 10px 15px;
+      margin-bottom: 10px;
+      border-radius: 15px;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .bot-message {
+      background-color: #333;
+      color: white;
+      align-self: flex-start;
+      border-bottom-left-radius: 5px;
+    }
+
+    .user-message {
+      background-color: #e82127;
+      color: white;
+      align-self: flex-end;
+      border-bottom-right-radius: 5px;
+    }
+
+    .chatbot-input {
+      display: flex;
+      padding: 15px;
+      background-color: #333;
+      border-top: 1px solid #444;
+    }
+
+    .chatbot-input input {
+      flex: 1;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 20px;
+      background-color: #444;
+      color: white;
+      outline: none;
+    }
+
+    .chatbot-input input::placeholder {
+      color: #aaa;
+    }
+
+    .chatbot-send {
+      background-color: #e82127;
+      color: white;
+      border: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-left: 10px;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: background-color 0.3s ease;
+    }
+
+    .chatbot-send:hover {
+      background-color: #c41e23;
+    }
+
+    .typing-indicator {
+      display: flex;
+      padding: 10px 15px;
+      background-color: #333;
+      border-radius: 15px;
+      margin-bottom: 10px;
+      align-self: flex-start;
+      border-bottom-left-radius: 5px;
+      width: fit-content;
+    }
+
+    .typing-dot {
+      width: 8px;
+      height: 8px;
+      background-color: #aaa;
+      border-radius: 50%;
+      margin: 0 2px;
+      animation: typingAnimation 1.5s infinite ease-in-out;
+    }
+
+    .typing-dot:nth-child(2) {
+      animation-delay: 0.5s;
+    }
+
+    .typing-dot:nth-child(3) {
+      animation-delay: 1s;
+    }
+
+    @keyframes typingAnimation {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+      100% { transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Notification Badge */
+    .notification-badge {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      background-color: #fff;
+      color: #e82127;
+      font-size: 12px;
+      font-weight: bold;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
+
+    /* Mobile Responsiveness for Chatbot */
+    @media screen and (max-width: 768px) {
+      .chatbot-container {
+        width: 90%;
+        height: 70vh;
+        right: 5%;
+        left: 5%;
+        bottom: 80px;
+      }
+      
+      .chatbot-button {
+        bottom: 20px;
+        right: 20px;
+      }
+    }
+  </style>
+</head>
+<body class="min-h-screen">
+  <!-- Navigation Bar -->
+  <nav class="bg-black bg-opacity-90 p-4 fixed w-full top-0 z-50 shadow-lg">
+    <div class="container mx-auto flex justify-between items-center">
+      <!-- Left Section: Logo -->
+      <div class="flex items-center">
+        <img src="https://www.tesla.com/themes/custom/tesla_frontend/assets/favicon.ico" alt="Tesla Logo" class="h-10 mr-4">
+        <span class="text-2xl font-bold text-white">TESLA</span>
+      </div>
+      <!-- Center Section: Navigation Links -->
+      <div class="flex-1 flex justify-center space-x-8">
+        <a href="home.html" class="nav-link text-white text-lg">Home</a>
+        <div class="dropdown">
+          <span class="nav-link text-white text-lg">Services</span>
+          <div class="dropdown-content">
+            <a href="Insurance.html">Insurance</a>
+            <a href="/HTML/maintance.html"> Maintenance</a>
+            <a href="booktest.html">Book Test</a>
+            <a href="loan.html">Loan</a>
+          </div>
+        </div>
+        <div class="dropdown">
+          <span class="nav-link text-white text-lg">Buy</span>
+          <div class="dropdown-content">
+            <a href="cars.html">Cars</a>
+            <a href="/HTML/showroom.html">ShowRoom</a>
+            <a href="/HTML/upcoming.html">UpComing Cars</a>
+          </div>
+        </div>
+        <a href="contactus.html" class="nav-link text-white text-lg">Contact Us</a>
+        <a href="FAQ.html" class="nav-link text-white text-lg">FAQ</a>
+      </div>
+      <!-- Right Section: Icons -->
+      <div class="flex space-x-6">
+        <div class="dropdown nav-link text-white text-lg flex items-center">
+          <i class="fas fa-globe"></i>
+          <div class="dropdown-content">
+            <a href="#">English</a>
+            <a href="#">Arabic</a>
+          </div>
+        </div>
+        <a href="profile.html" class="nav-link text-white text-lg flex items-center">
+          <i class="fas fa-user"></i>
+        </a>
+        <a href="login.html" class="nav-link text-white text-lg flex items-center">
+          <i class="fas fa-lock mr-2"></i> Sign In
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero-section h-screen flex items-center justify-center text-center">
+    <div class="container mx-auto px-4">
+      <h1 class="text-5xl md:text-7xl font-bold mb-6 animate-fade-in">Welcome to the Future</h1>
+      <p class="text-xl md:text-2xl mb-8 text-gray-300">Experience innovation like never before with Tesla's cutting-edge technology.</p>
+      <a href="cars.html" class="bg-red-600 text-white px-8 py-3 rounded-full text-lg hover:bg-red-700 transition duration-300">Explore Now</a>
+    </div>
+  </section>
+
+  <!-- Features Section: Why Choose Tesla? -->
+  <section class="features-section">
+    <div class="container mx-auto px-4 text-center">
+      <h2 class="text-4xl font-bold mb-10">Why Choose Tesla?</h2>
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div class="feature-card">
+          <i class="fas fa-bolt"></i>
+          <h3 class="text-xl font-semibold mb-2">Unmatched Performance</h3>
+          <p class="text-gray-300">Experience lightning-fast acceleration and superior handling with Tesla's electric powertrains.</p>
+        </div>
+        <div class="feature-card">
+          <i class="fas fa-leaf"></i>
+          <h3 class="text-xl font-semibold mb-2">Sustainability</h3>
+          <p class="text-gray-300">Drive eco-friendly with zero-emission vehicles that help save the planet.</p>
+        </div>
+        <div class="feature-card">
+          <i class="fas fa-microchip"></i>
+          <h3 class="text-xl font-semibold mb-2">Advanced Technology</h3>
+          <p class="text-gray-300">Autopilot, over-the-air updates, and cutting-edge features for a smarter drive.</p>
+        </div>
+        <div class="feature-card">
+          <i class="fas fa-car"></i>
+          <h3 class="text-xl font-semibold mb-2">Sleek Design</h3>
+          <p class="text-gray-300">Iconic, minimalist design that turns heads wherever you go.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Drive the Future Section -->
+  <section class="drive-future-section">
+    <div class="drive-future-content container mx-auto px-4">
+      <h2 class="text-4xl font-bold mb-4">Drive the Future</h2>
+      <p class="text-xl text-gray-300 mb-8">Feel the power of electric driving. Schedule a test drive with Tesla today and experience the future on the road.</p>
+      <a href="booktest.html" class="cta-btn">Schedule a Test Drive</a>
+    </div>
+  </section>
+
+  <!-- Carousel Section -->
+  <section class="py-10">
+    <div class="carousel">
+      <button class="carousel-btn left" id="leftBtn">❮</button>
+      <div class="carousel-inner" id="carouselInner">
+        <div class="carousel-item" style="background-image: url('/imges/CyberTruck.png');">
+          <div class="text-center">
+            <h2 class="text-4xl font-bold mb-4">Cybertruck</h2>
+            <p class="mb-4">All-Terrain Beast</p>
+            <a href="cars.html" class="bg-blue-600 text-white px-6 py-2 rounded mr-2 hover:bg-blue-700">Order Now</a>
+            <a href="cars.html" class="bg-white text-blue-600 px-6 py-2 rounded hover:bg-gray-200">Learn More</a>
+          </div>
+        </div>
+        <div class="carousel-item" style="background-image: url('/imges/custome.png');">
+          <div class="text-center">
+            <h2 class="text-4xl font-bold mb-4">Custom Tesla</h2>
+            <p class="mb-4">Your Custom Electric Experience</p>
+            <a href="cars.html" class="bg-blue-600 text-white px-6 py-2 rounded mr-2 hover:bg-blue-700">Order Now</a>
+            <a href="cars.html" class="bg-white text-blue-600 px-6 py-2 rounded hover:bg-gray-200">Learn More</a>
+          </div>
+        </div>
+        <div class="carousel-item" style="background-image: url('/imges/model s.png');">
+          <div class="text-center">
+            <h2 class="text-4xl font-bold mb-4">Model S</h2>
+            <p class="mb-4">Luxury Sedan - Free Supercharging Ending Soon</p>
+            <a href="cars.html" class="bg-blue-600 text-white px-6 py-2 rounded mr-2 hover:bg-blue-700">Order Now</a>
+            <a href="cars.html" class="bg-white text-blue-600 px-6 py-2 rounded hover:bg-gray-200">Learn More</a>
+          </div>
+        </div>
+        <div class="carousel-item" style="background-image: url('/imges/model 3.png');">
+          <div class="text-center">
+            <h2 class="text-4xl font-bold mb-4">Model 3</h2>
+            <p class="mb-4">Electric Efficiency - Affordable Luxury</p>
+            <a href="cars.html" class="bg-blue-600 text-white px-6 py-2 rounded mr-2 hover:bg-blue-700">Order Now</a>
+            <a href="cars.html" class="bg-white text-blue-600 px-6 py-2 rounded hover:bg-gray-200">Learn More</a>
+          </div>
+        </div>
+        <div class="carousel-item" style="background-image: url('/imges/image.png');">
+          <div class="text-center">
+            <h2 class="text-4xl font-bold mb-4">Roadster</h2>
+            <p class="mb-4">Fastest Electric Car</p>
+            <a href="cars.html" class="bg-blue-600 text-white px-6 py-2 rounded mr-2 hover:bg-blue-700">Order Now</a>
+            <a href="cars.html" class="bg-white text-blue-600 px-6 py-2 rounded hover:bg-gray-200">Learn More</a>
+          </div>
+        </div>
+      </div>
+      <button class="carousel-btn right" id="rightBtn">❯</button>
+      <div class="carousel-dots" id="carouselDots">
+        <span class="dot active" onclick="goToSlide(0)"></span>
+        <span class="dot" onclick="goToSlide(1)"></span>
+        <span class="dot" onclick="goToSlide(2)"></span>
+        <span class="dot" onclick="goToSlide(3)"></span>
+        <span class="dot" onclick="goToSlide(4)"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Updated Scrolling Car Strips Section -->
+  <section class="py-10 bg-black">
+    <div class="container mx-auto px-4">
+      <h2 class="text-4xl font-bold text-center text-white mb-8">Explore Models</h2>
+      
+      <div class="scrolling-strips-container">
+        <!-- First Strip - Right to Left -->
+        <div class="scrolling-strip">
+          <div class="strip-content rtl" id="stripOne">
+            <!-- Car Cards will be populated by JavaScript -->
+          </div>
+        </div>
+        
+        <!-- Second Strip - Left to Right -->
+        <div class="scrolling-strip">
+          <div class="strip-content ltr" id="stripTwo">
+            <!-- Car Cards will be populated by JavaScript -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-black bg-opacity-80 py-10">
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8 text-gray-400">
+        <!-- Company Links -->
+        <div>
+          <h3 class="text-lg font-semibold text-white mb-4">Company</h3>
+          <ul class="space-y-2">
+            <li><a href="about.html" class="hover:text-red-600 transition duration-300">About Us</a></li>
+            <li><a href="careers.html" class="hover:text-red-600 transition duration-300">Careers</a></li>
+            <li><a href="privacy.html" class="hover:text-red-600 transition duration-300">Privacy Policy</a></li>
+            <li><a href="terms.html" class="hover:text-red-600 transition duration-300">Terms of Service</a></li>
+          </ul>
+        </div>
+        <!-- Social Media -->
+        <div>
+          <h3 class="text-lg font-semibold text-white mb-4">Follow Us</h3>
+          <div class="flex space-x-4">
+            <a href="https://x.com/tesla" target="_blank" class="text-gray-400 hover:text-red-600 transition duration-300">
+              <i class="fab fa-x-twitter fa-lg"></i>
+            </a>
+            <a href="https://www.instagram.com/teslamotors" target="_blank" class="text-gray-400 hover:text-red-600 transition duration-300">
+              <i class="fab fa-instagram fa-lg"></i>
+            </a>
+            <a href="https://www.youtube.com/tesla" target="_blank" class="text-gray-400 hover:text-red-600 transition duration-300">
+              <i class="fab fa-youtube fa-lg"></i>
+            </a>
+            <a href="https://www.facebook.com/TeslaMotorsCorp" target="_blank" class="text-gray-400 hover:text-red-600 transition duration-300">
+              <i class="fab fa-facebook fa-lg"></i>
+            </a>
+          </div>
+        </div>
+        <!-- Contact Info -->
+        <div>
+          <h3 class="text-lg font-semibold text-white mb-4">Contact Us</h3>
+          <p>Email: <a href="mailto:karimhamad221@gmail.com" class="hover:text-red-600 transition duration-300">karimhamad221@gmail.com</a></p>
+          <p>Phone: <a href="tel:+201119576574" class="hover:text-red-600 transition duration-300">+201119576574</a></p>
+          <p><a href="contactus.html" class="hover:text-red-600 transition duration-300">Contact Form</a></p>
+        </div>
+        <!-- Newsletter Signup -->
+        <div>
+          <h3 class="text-lg font-semibold text-white mb-4">Newsletter</h3>
+          <p class="mb-4">Stay updated with the latest Tesla news and offers.</p>
+          <form id="newsletter-form" class="flex flex-col">
+            <input type="email" name="email" placeholder="Enter your email" class="p-2 rounded text-black mb-2" required />
+            <button type="submit" class="bg-red-600 text-white p-2 rounded hover:bg-red-700 transition duration-300">Subscribe</button>
+          </form>
+        </div>
+      </div>
+      <div class="mt-8 text-center text-gray-400">
+        <p>© 2025 Tesla Inspired Design. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Chatbot Button -->
+  <div class="chatbot-button" id="chatbotButton">
+    <span class="notification-badge">1</span>
+    <i class="fas fa-comment-dots chatbot-icon"></i>
+  </div>
+
+  <!-- Chatbot Container -->
+  <div class="chatbot-container" id="chatbotContainer">
+    <div class="chatbot-header">
+      <div class="chatbot-title">
+        <img src="https://www.tesla.com/themes/custom/tesla_frontend/assets/favicon.ico" alt="Tesla Logo">
+        <h3>Tesla Assistant</h3>
+      </div>
+      <div class="chatbot-close" id="chatbotClose">×</div>
+    </div>
+    <div class="chatbot-messages" id="chatbotMessages">
+      <!-- Messages will be added here by JavaScript -->
+    </div>
+    <div class="chatbot-input">
+      <input type="text" id="userInput" placeholder="Type your message..." autocomplete="off">
+      <button class="chatbot-send" id="sendMessage">
+        <i class="fas fa-paper-plane"></i>
+      </button>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Hero text animation
+      const heroText = document.querySelector('.hero-section h1');
+      heroText.classList.add('animate-fade-in');
+
+      // Carousel functionality
+      let currentSlide = 0;
+      const slides = document.querySelectorAll('.carousel-item');
+      const dots = document.querySelectorAll('.dot');
+      const totalSlides = slides.length;
+      const leftBtn = document.getElementById('leftBtn');
+      const rightBtn = document.getElementById('rightBtn');
+
+      function updateSlide() {
+        const offset = -currentSlide * 100;
+        document.getElementById('carouselInner').style.transform = `translateX(${offset}%)`;
+        dots.forEach((dot, index) => {
+          dot.classList.toggle('active', index === currentSlide);
+        });
+      }
+
+      function moveSlide(direction) {
+        currentSlide += direction;
+        if (currentSlide < 0) currentSlide = totalSlides - 1;
+        if (currentSlide >= totalSlides) currentSlide = 0;
+        updateSlide();
+      }
+
+      window.goToSlide = function(index) {
+        currentSlide = index;
+        updateSlide();
+      }
+
+      leftBtn.addEventListener('click', () => moveSlide(-1));
+      rightBtn.addEventListener('click', () => moveSlide(1));
+
+      setInterval(() => moveSlide(1), 5000);
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft') moveSlide(-1);
+        if (e.key === 'ArrowRight') moveSlide(1);
+      });
+
+      updateSlide();
+
+      // Newsletter form submission
+      document.getElementById('newsletter-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const email = document.querySelector('#newsletter-form input[name="email"]').value;
+        if (email) {
+          alert('Thank you for subscribing!');
+          this.reset();
+        } else {
+          alert('Please enter a valid email address.');
+        }
+      });
+      
+      // Car data for scrolling strips
+      const cars1 = [
+        {
+          name: "Cybertruck",
+          description: "All-Terrain Beast",
+          image: "/imges/CyberTruck.png"
+        },
+        {
+          name: "Model S",
+          description: "Luxury Sedan",
+          image: "/imges/model s.png"
+        },
+        {
+          name: "Model 3",
+          description: "Affordable Luxury",
+          image: "/imges/model 3.png"
+        },
+        {
+          name: "Custom Tesla",
+          description: "Your Custom Electric Experience",
+          image: "/imges/custome.png"
+        },
+        {
+          name: "Roadster",
+          description: "Fastest Electric Car",
+          image: "/imges/image.png"
+        }
+      ];
+
+      const cars2 = [
+        {
+          name: "Model X",
+          description: "Premium SUV",
+          image: "/imges/CyberTruck.png"
+        },
+        {
+          name: "Model Y",
+          description: "Compact SUV",
+          image: "/imges/custome.png"
+        },
+        {
+          name: "Semi",
+          description: "Electric Truck",
+          image: "/imges/model s.png"
+        },
+        {
+          name: "Roadster 2025",
+          description: "Ultimate Performance",
+          image: "/imges/model 3.png"
+        },
+        {
+          name: "Solar Roof",
+          description: "Power Your Home",
+          image: "/imges/image.png"
+        }
+      ];
+
+      // Function to create car cards
+      function createCarCard(car) {
+        const card = document.createElement('div');
+        card.className = 'car-card';
+        card.style.backgroundImage = `url('${car.image}')`;
+        
+        const content = document.createElement('div');
+        content.className = 'car-card-content';
+        
+        const name = document.createElement('span');
+        name.textContent = car.name;
+        
+        const description = document.createElement('p');
+        description.textContent = car.description;
+        
+        content.appendChild(name);
+        content.appendChild(description);
+        card.appendChild(content);
+        
+        return card;
+      }
+
+      // Function to populate the strips
+      function populateStrips() {
+        const stripOne = document.getElementById('stripOne');
+        const stripTwo = document.getElementById('stripTwo');
+        
+        // Clear existing content
+        stripOne.innerHTML = '';
+        stripTwo.innerHTML = '';
+        
+        // Create enough duplicates for continuous scrolling (first strip)
+        for (let i = 0; i < 6; i++) {
+          cars1.forEach(car => {
+            stripOne.appendChild(createCarCard(car));
+          });
+        }
+        
+        // Create enough duplicates for continuous scrolling (second strip)
+        for (let i = 0; i < 6; i++) {
+          cars2.forEach(car => {
+            stripTwo.appendChild(createCarCard(car));
+          });
+        }
+      }
+
+      // Initialize scrolling strips
+      populateStrips();
+      
+      // Pause animation on hover
+      const strips = document.querySelectorAll('.strip-content');
+      strips.forEach(strip => {
+        strip.addEventListener('mouseenter', function() {
+          this.style.animationPlayState = 'paused';
+        });
+        
+        strip.addEventListener('mouseleave', function() {
+          this.style.animationPlayState = 'running';
+        });
+      });
+
+      // Chatbot functionality
+      const chatbotButton = document.getElementById('chatbotButton');
+      const chatbotContainer = document.getElementById('chatbotContainer');
+      const chatbotClose = document.getElementById('chatbotClose');
+      const chatbotMessages = document.getElementById('chatbotMessages');
+      const userInput = document.getElementById('userInput');
+      const sendMessage = document.getElementById('sendMessage');
+
+      // Predefined responses
+      const botResponses = {
+        greeting: [
+          "Hello! Welcome to Tesla. How can I assist you today?",
+          "Hi there! I'm Tesla's virtual assistant. What can I help you with?",
+          "Welcome to Tesla! I'm here to answer your questions."
+        ],
+        models: [
+          "Tesla offers several models: Model S, Model 3, Model X, Model Y, Cybertruck, and Roadster. Which one are you interested in?",
+          "Our current lineup includes Model S, Model 3, Model X, Model Y, with Cybertruck and Roadster coming soon. Would you like details on any specific model?"
+        ],
+        pricing: [
+          "Tesla vehicle prices start from $38,990 for Model 3, $47,990 for Model Y, $74,990 for Model S, and $79,990 for Model X. Prices may vary based on configuration and location.",
+          "The starting prices for our vehicles are: Model 3 ($38,990), Model Y ($47,990), Model S ($74,990), and Model X ($79,990). Would you like to know about financing options?"
+        ],
+        testDrive: [
+          "You can schedule a test drive through our website or by visiting a Tesla showroom. Would you like me to help you book one now?",
+          "Test drives can be arranged online or at your nearest Tesla location. Can I help you find the closest showroom?"
+        ],
+        delivery: [
+          "Delivery times vary by model and your location. Currently, most new orders are delivered within 2-12 weeks. Would you like to check the estimated delivery time for a specific model?",
+          "Depending on the model and your region, delivery typically takes 2-12 weeks. I can provide more specific information if you tell me which model you're interested in."
+        ],
+        charging: [
+          "Tesla vehicles can be charged at home using a Wall Connector or Mobile Connector, or at public Supercharger stations. Would you like more information about charging options?",
+          "We offer several charging solutions: home charging with Wall Connector, Mobile Connector for on-the-go, and our extensive Supercharger network. What would you like to know more about?"
+        ],
+        autopilot: [
+          "Tesla Autopilot is our advanced driver assistance system that enhances safety and convenience. Full Self-Driving capability adds additional features like auto lane change and Smart Summon. Would you like to learn more?",
+          "Autopilot comes standard on all Tesla vehicles and includes Traffic-Aware Cruise Control and Autosteer. Full Self-Driving capability is available as an upgrade. Can I tell you more about these features?"
+        ],
+        default: [
+          "I'm not sure I understand. Could you rephrase your question?",
+          "I don't have information on that yet. Would you like to know about our vehicles, pricing, or charging options instead?",
+          "I'm still learning! Could you ask about Tesla vehicles, test drives, or charging options?"
+        ]
+      };
+
+      // Function to get a random response from a category
+      function getRandomResponse(category) {
+        const responses = botResponses[category] || botResponses.default;
+        return responses[Math.floor(Math.random() * responses.length)];
+      }
+
+      // Function to determine response category based on user input
+      function getResponseCategory(input) {
+        input = input.toLowerCase();
+        
+        if (input.match(/hello|hi|hey|greetings/)) {
+          return 'greeting';
+        } else if (input.match(/model|models|cars|vehicles|lineup/)) {
+          return 'models';
+        } else if (input.match(/price|cost|how much|pricing/)) {
+          return 'pricing';
+        } else if (input.match(/test drive|testdrive|drive|try/)) {
+          return 'testDrive';
+        } else if (input.match(/delivery|when|wait time|receive/)) {
+          return 'delivery';
+        } else if (input.match(/charging|charger|charge|supercharger|battery/)) {
+          return 'charging';
+        } else if (input.match(/autopilot|self driving|autonomous|fsd|full self/)) {
+          return 'autopilot';
+        } else {
+          return 'default';
+        }
+      }
+
+      // Function to add a message to the chat
+      function addMessage(text, isUser = false) {
+        const messageElement = document.createElement('div');
+        messageElement.classList.add('message');
+        messageElement.classList.add(isUser ? 'user-message' : 'bot-message');
+        messageElement.textContent = text;
+        chatbotMessages.appendChild(messageElement);
+        chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+      }
+
+      // Function to show typing indicator
+      function showTypingIndicator() {
+        const typingIndicator = document.createElement('div');
+        typingIndicator.classList.add('typing-indicator');
+        typingIndicator.id = 'typingIndicator';
+        
+        for (let i = 0; i < 3; i++) {
+          const dot = document.createElement('div');
+          dot.classList.add('typing-dot');
+          typingIndicator.appendChild(dot);
+        }
+        
+        chatbotMessages.appendChild(typingIndicator);
+        chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+      }
+
+      // Function to hide typing indicator
+      function hideTypingIndicator() {
+        const indicator = document.getElementById('typingIndicator');
+        if (indicator) {
+          indicator.remove();
+        }
+      }
+
+      // Function to process user input and generate response
+      function processUserInput() {
+        const text = userInput.value.trim();
+        if (text === '') return;
+        
+        // Add user message
+        addMessage(text, true);
+        userInput.value = '';
+        
+        // Show typing indicator
+        showTypingIndicator();
+        
+        // Simulate bot thinking and typing
+        setTimeout(() => {
+          hideTypingIndicator();
+          
+          // Determine response category and get response
+          const category = getResponseCategory(text);
+          const response = getRandomResponse(category);
+          
+          // Add bot response
+          addMessage(response);
+        }, 1500); // Simulate typing delay
+      }
+
+      // Event listeners for chatbot
+      chatbotButton.addEventListener('click', () => {
+        chatbotContainer.style.display = 'flex';
+        chatbotButton.querySelector('.notification-badge').style.display = 'none';
+        
+        // If this is the first time opening, add welcome message
+        if (chatbotMessages.children.length === 0) {
+          setTimeout(() => {
+            addMessage("👋 Welcome to Tesla! I'm your virtual assistant. How can I help you today?");
+          }, 500);
+        }
+      });
+
+      chatbotClose.addEventListener('click', () => {
+        chatbotContainer.style.display = 'none';
+      });
+
+      sendMessage.addEventListener('click', processUserInput);
+
+      userInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          processUserInput();
+        }
+      });
+
+      // Auto-open chatbot after 10 seconds if not already opened
+      setTimeout(() => {
+        if (chatbotContainer.style.display !== 'flex') {
+          chatbotButton.classList.add('pulse');
+        }
+      }, 10000);
+    });
+  </script>
+</body>
+</html>

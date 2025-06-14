@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Test Drive Booking</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #000000; /* Black background */
+      padding: 40px;
+    }
+    .booking-form {
+      background: #333333; /* Dark gray box background */
+      padding: 30px;
+      max-width: 500px;
+      margin: auto;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+      color: #ffffff; /* White text for contrast */
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+      color: #ffffff; /* White text for contrast */
+    }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      background: #ffffff; /* White input background for readability */
+      color: #333; /* Dark text for input */
+    }
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 12px;
+      background: red; /* Default button color */
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: darkred; /* Hover button color */
+    }
+    #confirmation {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 18px;
+      color: #ffffff; /* White text for contrast */
+    }
+  </style>
+</head>
+<body>
+  <div class="booking-form">
+    <h2>Book a Test Drive</h2>
+    <form id="booking-form" method="post" action="/submit-booking">
+      <label for="car">Select a Car</label>
+      <select id="car" name="car" required>
+        <option value="" disabled selected>Select a car</option>
+        <option value="model_s">Tesla Model S</option>
+        <option value="model_3">Tesla Model 3</option>
+        <option value="model_x">Tesla Model X</option>
+      </select>
+
+      <label for="dealership">Select Dealership</label>
+      <select id="dealership" name="dealership" required>
+        <option value="" disabled selected>Select a dealership</option>
+        <option value="cairo">Cairo Branch</option>
+        <option value="alexandria">Alexandria Branch</option>
+      </select>
+
+      <label for="date">Preferred Date</label>
+      <input type="date" id="date" name="date" required />
+
+      <label for="time">Preferred Time</label>
+      <input type="time" id="time" name="time" required />
+
+      <label for="name">Full Name</label>
+      <input type="text" id="name" name="name" placeholder="Enter your full name" required />
+
+      <label for="phone">Phone Number</label>
+      <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required />
+
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" placeholder="Enter your email" required />
+
+      <button type="submit">Book Now</button>
+    </form>
+    <div id="confirmation"></div>
+  </div>
+
+  <script>
+    document.getElementById('booking-form').addEventListener('submit', function(event) {
+      event.preventDefault(); // Prevent default form submission
+
+      // Validate form inputs (basic check for required fields)
+      const car = document.getElementById('car').value;
+      const dealership = document.getElementById('dealership').value;
+      const date = document.getElementById('date').value;
+      const time = document.getElementById('time').value;
+      const name = document.getElementById('name').value;
+      const phone = document.getElementById('phone').value;
+      const email = document.getElementById('email').value;
+
+      if (!car || !dealership || !date || !time || !name || !phone || !email) {
+        document.getElementById('confirmation').innerText = 'Please fill out all fields.';
+        return;
+      }
+
+      // Display confirmation message
+      document.getElementById('confirmation').innerText = 'Booking Confirmed!'; // Or 'تم الحجز!' for Arabic
+
+      // Clear form inputs
+      document.getElementById('booking-form').reset();
+    });
+  </script>
+</body>
+</html>
